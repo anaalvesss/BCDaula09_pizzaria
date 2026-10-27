@@ -1,31 +1,31 @@
 USE pizzaria_db;
 
--- A) Quantas tabelas o banco possui?
+-- A) 
 SELECT COUNT(*) AS total_tabelas
 FROM information_schema.tables
 WHERE table_schema = 'pizzaria_db';
 
--- B) Quantos clientes estão cadastrados?
+-- B) 
 SELECT COUNT(*) AS total_clientes
 FROM clientes;
 
--- C) Quantas pizzas estão cadastradas?
+-- C) 
 SELECT COUNT(*) AS total_pizzas
 FROM pizzas;
 
--- D) Quantas pizzas o pedido numero 3 possui?
+-- D) 
 SELECT SUM(quantidade) AS total_pizzas
 FROM itens_pedido
 WHERE pedido_id = 3;
 
--- E) Qual o nome do cliente que fez o pedido numero 3?
+-- E) 
 SELECT c.nome
 FROM clientes c
 INNER JOIN pedidos p
 ON c.cliente_id = p.cliente_id
 WHERE p.pedido_id = 3;
 
--- F) Quais os nomes das pizzas do pedido numero 3?
+-- F) 
 SELECT pi.nome, ip.quantidade
 FROM itens_pedido ip
 INNER JOIN pizzas pi
@@ -33,21 +33,21 @@ ON ip.pizza_id = pi.pizza_id
 WHERE ip.pedido_id = 3;
 
 
--- G) Cadastrar o cliente Gaspar Oliveira
+-- G) 
 INSERT INTO clientes
 (nome, logradouro, numero, bairro, referencia, telefone)
 VALUES
 ('Gaspar Oliveira', 'Rua Lizandro Silva', 21, 'São Dimas',
 'Ao lado da igrejinha', '19 99898-1141');
 
--- H) Cadastrar a pizza A moda do chef
+-- H) 
 INSERT INTO pizzas (nome, descricao, preco)
 VALUES
 ('A moda do chef',
 'Molho de tomate, palmito macio em rodelas, coberto com catupiry, frango desfiado, ovos, carne seca, oregano e azeitonas',
 41.90);
 
--- I) Criar um pedido para o Gaspar com Margherita e Napolitana
+-- I) 
 INSERT INTO pedidos (cliente_id)
 SELECT cliente_id
 FROM clientes
@@ -77,7 +77,7 @@ WHERE c.nome = 'Gaspar Oliveira'
 ORDER BY p.pedido_id DESC
 LIMIT 1;
 
--- J) Criar outro pedido com 2 pizzas A moda do chef
+-- J) 
 INSERT INTO pedidos (cliente_id)
 SELECT cliente_id
 FROM clientes
@@ -95,7 +95,7 @@ WHERE c.nome = 'Gaspar Oliveira'
 ORDER BY p.pedido_id DESC
 LIMIT 1;
 
--- K) Alterar o pedido para 3 pizzas A moda do chef
+-- K) 
 UPDATE itens_pedido
 SET quantidade = 3
 WHERE pedido_id = (
