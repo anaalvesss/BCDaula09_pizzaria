@@ -33,15 +33,23 @@ ON ip.pizza_id = pi.pizza_id
 WHERE ip.pedido_id = 3;
 
 
--- G) 
+-- G)
 INSERT INTO clientes
-(nome, logradouro, numero, bairro, referencia, telefone)
+(nome, logradouro, numero, bairro, referencia)
 VALUES
 ('Gaspar Oliveira', 'Rua Lizandro Silva', 21, 'São Dimas',
-'Ao lado da igrejinha', '19 99898-1141');
+'Ao lado da igrejinha');
 
--- H) 
-INSERT INTO pizzas (nome, descricao, preco)
+-- Cadastrar o telefone do cliente
+INSERT INTO telefones (cliente_id, telefone)
+SELECT cliente_id, '19998981141'
+FROM clientes
+WHERE nome = 'Gaspar Oliveira'
+ORDER BY cliente_id DESC
+LIMIT 1;
+
+-- H)
+INSERT INTO pizzas (nome, descricao, valor)
 VALUES
 ('A moda do chef',
 'Molho de tomate, palmito macio em rodelas, coberto com catupiry, frango desfiado, ovos, carne seca, oregano e azeitonas',
@@ -57,8 +65,8 @@ LIMIT 1;
 
 -- Inserir 1 Margherita no pedido mais recente do Gaspar
 INSERT INTO itens_pedido
-(pedido_id, pizza_id, quantidade, preco_unitario)
-SELECT p.pedido_id, pi.pizza_id, 1, pi.preco
+(pedido_id, pizza_id, quantidade, valor)
+SELECT p.pedido_id, pi.pizza_id, 1, pi.valor
 FROM pedidos p
 JOIN clientes c ON p.cliente_id = c.cliente_id
 JOIN pizzas pi ON pi.nome = 'Margherita'
@@ -68,8 +76,8 @@ LIMIT 1;
 
 -- Inserir 2 Napolitanas no mesmo pedido
 INSERT INTO itens_pedido
-(pedido_id, pizza_id, quantidade, preco_unitario)
-SELECT p.pedido_id, pi.pizza_id, 2, pi.preco
+(pedido_id, pizza_id, quantidade, valor)
+SELECT p.pedido_id, pi.pizza_id, 2, pi.valor
 FROM pedidos p
 JOIN clientes c ON p.cliente_id = c.cliente_id
 JOIN pizzas pi ON pi.nome = 'Napolitana'
@@ -78,16 +86,16 @@ ORDER BY p.pedido_id DESC
 LIMIT 1;
 
 -- J) 
-INSERT INTO pedidos (cliente_id)
-SELECT cliente_id
+INSERT INTO pedidos (cliente_id, data, hora)
+SELECT cliente_id, CURDATE(), CURTIME()
 FROM clientes
 WHERE nome = 'Gaspar Oliveira'
 ORDER BY cliente_id DESC
 LIMIT 1;
 
 INSERT INTO itens_pedido
-(pedido_id, pizza_id, quantidade, preco_unitario)
-SELECT p.pedido_id, pi.pizza_id, 2, pi.preco
+(pedido_id, pizza_id, quantidade, valor)
+SELECT p.pedido_id, pi.pizza_id, 2, pi.valor
 FROM pedidos p
 JOIN clientes c ON p.cliente_id = c.cliente_id
 JOIN pizzas pi ON pi.nome = 'A moda do chef'
@@ -114,8 +122,8 @@ AND pizza_id = (
 
 -- Acrescentar 1 Margherita ao mesmo pedido
 INSERT INTO itens_pedido
-(pedido_id, pizza_id, quantidade, preco_unitario)
-SELECT p.pedido_id, pi.pizza_id, 1, pi.preco
+(pedido_id, pizza_id, quantidade, valor)
+SELECT p.pedido_id, pi.pizza_id, 1, pi.valor
 FROM pedidos p
 JOIN clientes c ON p.cliente_id = c.cliente_id
 JOIN pizzas pi ON pi.nome = 'Margherita'
