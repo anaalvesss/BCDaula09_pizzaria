@@ -63,17 +63,6 @@ WHERE nome = 'Gaspar Oliveira'
 ORDER BY cliente_id DESC
 LIMIT 1;
 
--- Inserir 1 Margherita no pedido mais recente do Gaspar
-INSERT INTO itens_pedido
-(pedido_id, pizza_id, quantidade, valor)
-SELECT p.pedido_id, pi.pizza_id, 1, pi.valor
-FROM pedidos p
-JOIN clientes c ON p.cliente_id = c.cliente_id
-JOIN pizzas pi ON pi.nome = 'Margherita'
-WHERE c.nome = 'Gaspar Oliveira'
-ORDER BY p.pedido_id DESC
-LIMIT 1;
-
 -- Inserir 2 Napolitanas no mesmo pedido
 INSERT INTO itens_pedido
 (pedido_id, pizza_id, quantidade, valor)
